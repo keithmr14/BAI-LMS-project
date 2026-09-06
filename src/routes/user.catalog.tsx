@@ -9,7 +9,7 @@ import { AccentButton, SelectInput } from "@/components/Tabbed";
 import { books, categories } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/student/catalog")({
+export const Route = createFileRoute("/user/catalog")({
   head: () => ({
     meta: [
       { title: "Catalog · BAI Archives" },
@@ -60,7 +60,7 @@ function StudentCatalog() {
 
   return (
     <AppShell
-      role="student"
+      role="user"
       title="Catalog"
       subtitle="Physical shelves and digital editions"
     >

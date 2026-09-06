@@ -10,18 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AdminBooksRouteImport } from './routes/admin.books'
 import { Route as AdminCirculationRouteImport } from './routes/admin.circulation'
 import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminMembersRouteImport } from './routes/admin.members'
-import { Route as StudentCatalogRouteImport } from './routes/student.catalog'
-import { Route as StudentHomeRouteImport } from './routes/student.home'
-import { Route as StudentLibraryRouteImport } from './routes/student.library'
-import { Route as StudentProfileRouteImport } from './routes/student.profile'
+import { Route as UserCatalogRouteImport } from './routes/user.catalog'
+import { Route as UserHomeRouteImport } from './routes/user.home'
+import { Route as UserLibraryRouteImport } from './routes/user.library'
+import { Route as UserProfileRouteImport } from './routes/user.profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminBooksRoute = AdminBooksRouteImport.update({
@@ -44,107 +56,121 @@ const AdminMembersRoute = AdminMembersRouteImport.update({
   path: '/admin/members',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudentCatalogRoute = StudentCatalogRouteImport.update({
-  id: '/student/catalog',
-  path: '/student/catalog',
+const UserCatalogRoute = UserCatalogRouteImport.update({
+  id: '/user/catalog',
+  path: '/user/catalog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudentHomeRoute = StudentHomeRouteImport.update({
-  id: '/student/home',
-  path: '/student/home',
+const UserHomeRoute = UserHomeRouteImport.update({
+  id: '/user/home',
+  path: '/user/home',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudentLibraryRoute = StudentLibraryRouteImport.update({
-  id: '/student/library',
-  path: '/student/library',
+const UserLibraryRoute = UserLibraryRouteImport.update({
+  id: '/user/library',
+  path: '/user/library',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StudentProfileRoute = StudentProfileRouteImport.update({
-  id: '/student/profile',
-  path: '/student/profile',
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/user/profile',
+  path: '/user/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/circulation': typeof AdminCirculationRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/members': typeof AdminMembersRoute
-  '/student/catalog': typeof StudentCatalogRoute
-  '/student/home': typeof StudentHomeRoute
-  '/student/library': typeof StudentLibraryRoute
-  '/student/profile': typeof StudentProfileRoute
+  '/user/catalog': typeof UserCatalogRoute
+  '/user/home': typeof UserHomeRoute
+  '/user/library': typeof UserLibraryRoute
+  '/user/profile': typeof UserProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/circulation': typeof AdminCirculationRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/members': typeof AdminMembersRoute
-  '/student/catalog': typeof StudentCatalogRoute
-  '/student/home': typeof StudentHomeRoute
-  '/student/library': typeof StudentLibraryRoute
-  '/student/profile': typeof StudentProfileRoute
+  '/user/catalog': typeof UserCatalogRoute
+  '/user/home': typeof UserHomeRoute
+  '/user/library': typeof UserLibraryRoute
+  '/user/profile': typeof UserProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/admin/books': typeof AdminBooksRoute
   '/admin/circulation': typeof AdminCirculationRoute
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/members': typeof AdminMembersRoute
-  '/student/catalog': typeof StudentCatalogRoute
-  '/student/home': typeof StudentHomeRoute
-  '/student/library': typeof StudentLibraryRoute
-  '/student/profile': typeof StudentProfileRoute
+  '/user/catalog': typeof UserCatalogRoute
+  '/user/home': typeof UserHomeRoute
+  '/user/library': typeof UserLibraryRoute
+  '/user/profile': typeof UserProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
+    | '/register'
     | '/admin/books'
     | '/admin/circulation'
     | '/admin/dashboard'
     | '/admin/members'
-    | '/student/catalog'
-    | '/student/home'
-    | '/student/library'
-    | '/student/profile'
+    | '/user/catalog'
+    | '/user/home'
+    | '/user/library'
+    | '/user/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
+    | '/register'
     | '/admin/books'
     | '/admin/circulation'
     | '/admin/dashboard'
     | '/admin/members'
-    | '/student/catalog'
-    | '/student/home'
-    | '/student/library'
-    | '/student/profile'
+    | '/user/catalog'
+    | '/user/home'
+    | '/user/library'
+    | '/user/profile'
   id:
     | '__root__'
     | '/'
+    | '/login'
+    | '/register'
     | '/admin/books'
     | '/admin/circulation'
     | '/admin/dashboard'
     | '/admin/members'
-    | '/student/catalog'
-    | '/student/home'
-    | '/student/library'
-    | '/student/profile'
+    | '/user/catalog'
+    | '/user/home'
+    | '/user/library'
+    | '/user/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   AdminBooksRoute: typeof AdminBooksRoute
   AdminCirculationRoute: typeof AdminCirculationRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminMembersRoute: typeof AdminMembersRoute
-  StudentCatalogRoute: typeof StudentCatalogRoute
-  StudentHomeRoute: typeof StudentHomeRoute
-  StudentLibraryRoute: typeof StudentLibraryRoute
-  StudentProfileRoute: typeof StudentProfileRoute
+  UserCatalogRoute: typeof UserCatalogRoute
+  UserHomeRoute: typeof UserHomeRoute
+  UserLibraryRoute: typeof UserLibraryRoute
+  UserProfileRoute: typeof UserProfileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -154,6 +180,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/books': {
@@ -184,32 +224,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMembersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/student/catalog': {
-      id: '/student/catalog'
-      path: '/student/catalog'
-      fullPath: '/student/catalog'
-      preLoaderRoute: typeof StudentCatalogRouteImport
+    '/user/catalog': {
+      id: '/user/catalog'
+      path: '/user/catalog'
+      fullPath: '/user/catalog'
+      preLoaderRoute: typeof UserCatalogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/student/home': {
-      id: '/student/home'
-      path: '/student/home'
-      fullPath: '/student/home'
-      preLoaderRoute: typeof StudentHomeRouteImport
+    '/user/home': {
+      id: '/user/home'
+      path: '/user/home'
+      fullPath: '/user/home'
+      preLoaderRoute: typeof UserHomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/student/library': {
-      id: '/student/library'
-      path: '/student/library'
-      fullPath: '/student/library'
-      preLoaderRoute: typeof StudentLibraryRouteImport
+    '/user/library': {
+      id: '/user/library'
+      path: '/user/library'
+      fullPath: '/user/library'
+      preLoaderRoute: typeof UserLibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/student/profile': {
-      id: '/student/profile'
-      path: '/student/profile'
-      fullPath: '/student/profile'
-      preLoaderRoute: typeof StudentProfileRouteImport
+    '/user/profile': {
+      id: '/user/profile'
+      path: '/user/profile'
+      fullPath: '/user/profile'
+      preLoaderRoute: typeof UserProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -217,14 +257,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   AdminBooksRoute: AdminBooksRoute,
   AdminCirculationRoute: AdminCirculationRoute,
   AdminDashboardRoute: AdminDashboardRoute,
   AdminMembersRoute: AdminMembersRoute,
-  StudentCatalogRoute: StudentCatalogRoute,
-  StudentHomeRoute: StudentHomeRoute,
-  StudentLibraryRoute: StudentLibraryRoute,
-  StudentProfileRoute: StudentProfileRoute,
+  UserCatalogRoute: UserCatalogRoute,
+  UserHomeRoute: UserHomeRoute,
+  UserLibraryRoute: UserLibraryRoute,
+  UserProfileRoute: UserProfileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

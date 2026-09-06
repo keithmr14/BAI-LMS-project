@@ -4,7 +4,7 @@ import { AppShell } from "@/components/AppShell";
 import { StatusBadge } from "@/components/StatusBadge";
 import { currentStudent, fines, loans } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/student/home")({
+export const Route = createFileRoute("/user/home")({
   head: () => ({
     meta: [
       { title: "My Library Home · BAI Archives" },

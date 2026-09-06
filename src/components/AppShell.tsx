@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, ChevronDown, LogOut, User } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Search, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Logo } from "@/components/Logo";
@@ -19,7 +19,6 @@ import { cn } from "@/lib/utils";
 
 type NavItem = { label: string; to: string };
 
-// TO EDIT
 const adminNav: NavItem[] = [
   { label: "Dashboard", to: "/admin/dashboard" },
   { label: "Books", to: "/admin/books" },
@@ -27,11 +26,11 @@ const adminNav: NavItem[] = [
   { label: "Circulation", to: "/admin/circulation" },
 ];
 
-const studentNav: NavItem[] = [
-  { label: "Home", to: "/student/home" },
-  { label: "Catalog", to: "/student/catalog" },
-  { label: "My Library", to: "/student/library" },
-  { label: "Profile", to: "/student/profile" },
+const userNav: NavItem[] = [
+  { label: "Home", to: "/user/home" },
+  { label: "Catalog", to: "/user/catalog" },
+  { label: "My Library", to: "/user/library" },
+  { label: "Profile", to: "/user/profile" },
 ];
 
 export function AppShell({
@@ -40,14 +39,14 @@ export function AppShell({
   subtitle,
   children,
 }: {
-  role: "admin" | "student";
+  role: "admin" | "user";
   title: string;
   subtitle?: string;
   children: ReactNode;
 }) {
-  const nav = role === "admin" ? adminNav : studentNav;
+  const nav = role === "admin" ? adminNav : userNav;
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const who = role === "admin" ? "L. Laureta · Admin" : "Nathaniel Ellacer · Student";
+  const who = role === "admin" ? "M. Fajardo · Admin" : "Andrea Villanueva · User";
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -57,12 +56,23 @@ export function AppShell({
             <Logo size={34} />
             <span className="hidden text-lg font-bold tracking-tight sm:inline">
               BAI
-              <span className="ml-2 text-xs font-medium opacity-75">Archives LMS</span>
+              <span className="ml-2 text-xs font-medium opacity-75">Archives</span>
             </span>
           </Link>
 
-          {/* HIGHLIGHT: Search bar removed and ml-auto added to anchor icons at the rightmost edge */}
-          <div className="ml-auto flex items-center gap-2">
+          {/* <div className="relative ml-2 flex-1 max-w-xl">
+            <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 opacity-70" />
+            <input
+              type="search"
+              placeholder={
+                role === "admin"
+                  ? "Search books, members, records…"
+                  : "Search the catalog…"
+              }
+              className="h-10 w-full rounded-md border border-white/20 bg-white/10 pl-9 pr-3 text-sm text-primary-foreground placeholder:text-white/60 focus:border-[var(--banana-gold)] focus:outline-none"
+            />
+          </div> */}
+          <div className="ml-auto flex items-center gap-4">
             <Popover>
               <PopoverTrigger className="relative rounded-md p-2 hover:bg-white/10">
                 <Bell className="h-5 w-5" />
@@ -87,19 +97,19 @@ export function AppShell({
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 rounded-md p-1.5 hover:bg-white/10">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--banana-gold)] text-sm font-bold text-[var(--charcoal-text)]">
-                  {role === "admin" ? "LL" : "NE"}
+                  {role === "admin" ? "MF" : "NE"}
                 </span>
                 <ChevronDown className="hidden h-4 w-4 sm:block" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <p className="px-2 py-1.5 text-xs text-muted-foreground">{who}</p>
                 <DropdownMenuItem asChild>
-                  <Link to={role === "admin" ? "/admin/dashboard" : "/student/profile"}>
+                  <Link to={role === "admin" ? "/admin/dashboard" : "/user/profile"}>
                     <User className="mr-2 h-4 w-4" /> Profile
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/">
+                  <Link to="/login">
                     <LogOut className="mr-2 h-4 w-4" /> Log out
                   </Link>
                 </DropdownMenuItem>
@@ -165,12 +175,14 @@ export function AppShell({
       <footer className="bg-primary text-primary-foreground">
         <div className="flex flex-col gap-2 px-4 py-4 text-xs md:flex-row md:items-center md:justify-between md:px-8">
           <p className="font-semibold">
-            Books of Art and Intelligence
+            BAI Archives · Books of Art and Intelligence
           </p>
-          <p className="opacity-85">&copy; 2026 BAI Archives. All rights reserved.</p>
-          <div className="flex gap-4 opacity-85">
-            {/* <Link to={role === "admin" ? "/admin/books" : "/student/catalog"}>Catalog</Link> */}
-          </div>
+          <p className="opacity-85"></p>
+          {/* <div className="flex gap-4 opacity-85">
+            <Link to={role === "admin" ? "/admin/books" : "/user/catalog"}></Link>
+            <span>Help</span>
+            <span>Privacy</span>
+          </div> */}
         </div>
       </footer>
     </div>

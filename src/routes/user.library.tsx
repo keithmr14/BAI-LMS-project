@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { AccentButton, PrimaryButton, Tabbed } from "@/components/Tabbed";
 import { currentStudent, fines, loans } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/student/library")({
+export const Route = createFileRoute("/user/library")({
   head: () => ({
     meta: [
       { title: "My Library · Loans, History & Fines · BAI Archives" },

@@ -12,7 +12,7 @@ import {
 } from "@/components/Tabbed";
 import { currentStudent } from "@/lib/mock-data";
 
-export const Route = createFileRoute("/student/profile")({
+export const Route = createFileRoute("/user/profile")({
   head: () => ({
     meta: [
       { title: "My Profile · BAI Archives" },
