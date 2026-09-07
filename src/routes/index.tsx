@@ -86,14 +86,14 @@ function HeroPage() {
             <Leaf className="h-3.5 w-3.5" /> Books of Art &amp; Intelligence
           </span>
           <h1 className="mt-5 max-w-3xl text-4xl leading-[1.05] font-extrabold text-white md:text-6xl">
-            A grove of quiet shelves,
+            Welcome to,
             <span className="block text-[var(--banana-gold)]">
-              grown for readers who linger.
+              the BAI Archives.
             </span>
           </h1>
           <p className="mt-5 max-w-xl text-base text-white/85 md:text-lg">
-            Physical and digital collections under the banana canopy — 4,000+ titles,
-            member loans, reservations and fines, all in one archive.
+            Physical and digital collections under the banana canopy. 
+            4,000+ titles, member loans, reservations and fines, all in one archive.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -115,7 +115,7 @@ function HeroPage() {
             Guests may browse this page freely · borrowing requires a member account
           </p>
 
-          <dl className="mt-12 grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4">
+          {/* <dl className="mt-12 grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4">
             {stats.map((k) => (
               <div
                 key={k.label}
@@ -127,7 +127,7 @@ function HeroPage() {
                 <dd className="mt-1 text-2xl font-extrabold text-white">{k.value}</dd>
               </div>
             ))}
-          </dl>
+          </dl> */}
         </div>
 
         <div className="banana-frieze h-3 w-full" />
@@ -139,7 +139,7 @@ function HeroPage() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <h2 className="flex items-center gap-2 text-2xl font-bold text-foreground md:text-3xl">
-                 Featured shelf
+                 Featured books
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Hand-picked by our librarians this week
@@ -214,9 +214,6 @@ function HeroPage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Barangay Maligaya, Nueva Ecija · (044) 812-3344
-            </p>
           </div>
 
           <div className="rounded-lg bg-[var(--primary-green)] p-7 text-white">
@@ -258,7 +255,7 @@ function HeroPage() {
           <p className="font-semibold text-white">
             The BAI Archives · Books of Art and Intelligence
           </p>
-          <p>Prototype build · sample records only</p>
+          <p>© 2026 BAI company. All rights reserved</p>
         </div>
       </footer>
     </div>
