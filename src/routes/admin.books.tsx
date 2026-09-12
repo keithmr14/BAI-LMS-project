@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/sheet";
 import { books, categories, locations, type Book } from "@/lib/mock-data";
 
+import React from "react";
+
 export const Route = createFileRoute("/admin/books")({
   head: () => ({
     meta: [
@@ -51,7 +53,7 @@ function BooksPage() {
       <Tabbed
         tabs={[
           { id: "catalog", label: "Catalog View", content: <CatalogTab /> },
-          { id: "entry", label: "Add/Edit Book (Entry Flow)", content: <EntryWizard /> },
+          { id: "entry", label: "Add/Edit Book", content: <EntryWizard /> },
         ]}
       />
     </AppShell>
@@ -224,54 +226,93 @@ const wizardSteps = [
   "Core Info",
   "Edition Info",
   "Asset Details",
-  "Finalize",
+  "Review & Finalize",
 ];
 
 function EntryWizard() {
   const [step, setStep] = useState(0);
-  const [isbn, setIsbn] = useState("978-1501110368");
+  const [isbn, setIsbn] = useState("");
   const [exists, setExists] = useState(false);
   const [assetType, setAssetType] = useState<"Physical" | "Digital">("Physical");
-  const [quantity, setQuantity] = useState(5);
+  const [quantity, setQuantity] = useState("");
   const [done, setDone] = useState(false);
 
   const [bookForm, setBookForm] = useState({
-    title: "It Ends with Us",
-    authors: "Colleen Hoover",
-    category: "Science",
-    keywords:
-      "Contemporary Fiction, Romance, Drama, Relationships, Domestic Violence, Resilience",
-    summary:
-      "A deeply personal story following Lily Bloom as she navigates a complex romantic relationship while confronting childhood trauma and difficult choices regarding cycle-breaking and emotional boundaries.",
+    title: "",
+    authors: "",
+    category: "",
+    keywords: "",
+    summary: "",
 
-    edition: "1",
-    editor: "Brother Bilo",
-    publisher: "Atria Books",
-    publicationYear: "2016",
-    language: "English",
-    pages: "384",
-    callNumber: "PS3608.O623 I84 2016",
-    price: "16.99",
+    edition: "",
+    editor: "",
+    publisher: "",
+    publicationYear: "",
+    language: "",
+    pages: "",
+    callNumber: "",
+    price: "",
 
-    format: "Paperback",
-    location: "Main Library - Shelf B2",
-    copyStatus: "Available",
-    condition: "Good",
-    replacementCost: "16.99",
-    physicalProcurementRecord: "PR-2026-FIC-082",
+    format: "",
+    location: "",
+    copyStatus: "",
+    condition: "",
+    replacementCost: "",
+    physicalProcurementRecord: "",
 
-
-    licensedQuantity: "1",
-    fileFormat: "PDF",
-    accessUrl: "https://ebooks.bai.edu/it-ends-with-us",
-    fileSize: "18.4",
-    maxConcurrent: "6",
-    copyrightStatus: "Licensed",
-    accessRestrictions: "Campus network only",
-    digitalProcurementRecord: "PR-2026-DIG-082",
+    licensedQuantity: "",
+    fileFormat: "",
+    accessUrl: "",
+    fileSize: "",
+    maxConcurrent: "",
+    copyrightStatus: "",
+    accessRestrictions: "",
+    digitalProcurementRecord: "",
   });
 
   const match = books.find((b) => b.isbn13 === isbn.trim() || b.isbn10 === isbn.trim());
+
+  function ReviewSection({
+    title,
+    children,
+  }: {
+    title: string;
+    children: React.ReactNode;
+  }) {
+    return (
+      <div className="space-y-3">
+        <h3 className="border-b pb-2 text-sm font-bold uppercase tracking-wide text-muted-foreground">
+          {title}
+        </h3>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  function ReviewField({
+    label,
+    value,
+    fullWidth = false,
+  }: {
+    label: string;
+    value: string;
+    fullWidth?: boolean;
+  }) {
+    return (
+      <div className={fullWidth ? "sm:col-span-2" : ""}>
+        <p className="text-xs font-semibold uppercase text-muted-foreground">
+          {label}
+        </p>
+
+        <p className="mt-1 rounded-md border bg-background px-3 py-2 text-sm">
+          {value || "—"}
+        </p>
+      </div>
+    );
+  }
 
   if (done) {
     return (
@@ -307,7 +348,7 @@ function EntryWizard() {
 
       {step === 0 ? (
         <div className="card-surface space-y-4 p-5">
-          <h2 className="font-bold">Step 1 — ISBN / Title check</h2>
+          <h2 className="font-bold">Step 1 — ISBN / Title Check</h2>
           <Field label="ISBN-10 / ISBN-13 or Title">
             <TextInput
               value={isbn}
@@ -355,7 +396,7 @@ function EntryWizard() {
 
       {step === 1 ? (
         <div className="card-surface space-y-4 p-5">
-          <h2 className="font-bold">Step 2 — Core info sheet</h2>
+          <h2 className="font-bold">Step 2 — Core Info</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Title">
               <TextInput
@@ -363,6 +404,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, title: e.target.value })
                 }
+                placeholder="e.g. The Great Gatsby"
               />
             </Field>
             <Field label="Author(s)">
@@ -371,11 +413,9 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, authors: e.target.value })
                 }
+                placeholder="e.g. J.R.R. Tolkien"
               />
             </Field>
-            {/* <Field label="Author(s)">
-              <TextInput defaultValue="Colleen Hoover" />
-            </Field> */}
             <Field label="Category">
                 <SelectInput
                   value={bookForm.category}
@@ -383,8 +423,12 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, category: e.target.value })
                   }
                 > 
+                  <option value="" disabled>
+                    Select a category
+                  </option>
+                
                 {categories.map((c) => (
-                  <option key={c}>{c}</option>
+                  <option key={c} value={c}>{c}</option>
                 ))}
               </SelectInput>
             </Field>
@@ -394,6 +438,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, keywords: e.target.value })
                 }
+                placeholder="e.g. Fiction, Romance, Drama"
               />
             </Field>
           </div>
@@ -403,13 +448,13 @@ function EntryWizard() {
               onChange={(e) =>
                 setBookForm({ ...bookForm, summary: e.target.value })
               }
+              placeholder="Enter a brief summary of the book"
             />
           </Field>
           <Field label="Cover image">
             <div className="flex items-center gap-3 rounded-md border border-dashed border-input p-4">
               <div className="h-16 w-12 rounded bg-[color-mix(in_srgb,var(--primary-green)_18%,white)]" />
               <div className="text-sm text-muted-foreground">
-                {/* it_ends_with_us_cover.jpg · 240 KB */}
                 Upload an image file
               </div>
               <GhostButton className="ml-auto">Upload</GhostButton>
@@ -421,7 +466,7 @@ function EntryWizard() {
 
       {step === 2 ? (
         <div className="card-surface space-y-4 p-5">
-          <h2 className="font-bold">Step 3 — Edition info sheet</h2>
+          <h2 className="font-bold">Step 3 — Edition Info</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Edition number">
               <TextInput
@@ -429,6 +474,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, edition: e.target.value })
                 }
+                placeholder="e.g. 1"
               />
             </Field>
             <Field label="Editor(s)">
@@ -437,6 +483,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, editor: e.target.value })
                 }
+                placeholder="e.g. John Smith"                
               />
             </Field>
             <Field label="Publisher">
@@ -445,6 +492,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, publisher: e.target.value })
                 }
+                placeholder="e.g. Penguin Random House"
               />
             </Field>
             <Field label="Publication year">
@@ -453,6 +501,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, publicationYear: e.target.value })
                 }
+                placeholder="e.g. 2020"
               />
             </Field>
             <Field label="Language">
@@ -462,6 +511,10 @@ function EntryWizard() {
                   setBookForm({ ...bookForm, language: e.target.value })
                 }
               >
+                <option value="" disabled>
+                  Select a language
+                </option>
+
                 <option>English</option>
                 <option>Filipino</option>
                 <option>Spanish</option>
@@ -473,6 +526,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, pages: e.target.value })
                 }
+                placeholder="e.g. 384"
               />
             </Field>
             <Field label="Call number">
@@ -481,6 +535,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, callNumber: e.target.value })
                 }
+                placeholder="e.g. PS3608.O623 I84 2016"
               />
             </Field>
             <Field label="Price cost (per unit)">
@@ -489,6 +544,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, price: e.target.value })
                 }
+                placeholder="e.g. 16.99"
               />
             </Field>
           </div>
@@ -499,7 +555,7 @@ function EntryWizard() {
       {step === 3 ? (
         <div className="card-surface space-y-4 p-5">
           <h2 className="font-bold">
-            Step 4 — {assetType} details
+            Step 4 — {assetType} Details
             {exists ? " (Book Already Exists — new edition)" : ""}
           </h2>
           {exists ? (
@@ -524,7 +580,8 @@ function EntryWizard() {
                   type="number"
                   min={1}
                   value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value) || 1)}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  placeholder="e.g. 5"
                 />
               </Field>
               <Field label="Format">
@@ -534,6 +591,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, format: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select a format
+                  </option>
+
                   <option>Hardcover</option>
                   <option>Paperback</option>
                   <option>Spiral</option>
@@ -546,8 +607,12 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, location: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select a location
+                  </option>
+
                   {locations.map((l) => (
-                    <option key={l}>{l}</option>
+                    <option key={l} value={1}>{l}</option>
                   ))}
                 </SelectInput>
               </Field>
@@ -558,6 +623,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, copyStatus: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select copy status
+                  </option>
+
                   <option>Available</option>
                   <option>Reserved</option>
                 </SelectInput>
@@ -569,6 +638,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, condition: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select condition
+                  </option>
+
                   <option>New</option>
                   <option>Good</option>
                   <option>Fair</option>
@@ -580,6 +653,7 @@ function EntryWizard() {
                   onChange={(e) =>
                     setBookForm({ ...bookForm, replacementCost: e.target.value })
                   }
+                  placeholder="e.g. 16.99"
                 />
               </Field>
                 <Field label="Procurement record (optional)">
@@ -591,6 +665,7 @@ function EntryWizard() {
                         physicalProcurementRecord: e.target.value,
                       })
                     }
+                    placeholder="e.g. PR-2026-FIC-082"
                   />
                 </Field>
             </div>
@@ -604,6 +679,7 @@ function EntryWizard() {
                 onChange={(e) =>
                   setBookForm({ ...bookForm, licensedQuantity: e.target.value })
                 }
+                placeholder="e.g. 5"
               />
             </Field>
               <Field label="File format">
@@ -613,6 +689,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, fileFormat: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select file format
+                  </option>
+
                   <option>PDF</option>
                   <option>EPUB</option>
                   <option>MOBI</option>
@@ -624,6 +704,7 @@ function EntryWizard() {
                   onChange={(e) =>
                     setBookForm({ ...bookForm, accessUrl: e.target.value })
                   }
+                  placeholder="e.g. https://ebooks.example.com/book"
                 />
               </Field>
               <Field label="File size (MB)">
@@ -632,6 +713,7 @@ function EntryWizard() {
                   onChange={(e) =>
                     setBookForm({ ...bookForm, fileSize: e.target.value })
                   }
+                  placeholder="e.g. 18.4"
                 />
               </Field>
               <Field label="Max concurrent users">
@@ -640,6 +722,7 @@ function EntryWizard() {
                   onChange={(e) =>
                     setBookForm({ ...bookForm, maxConcurrent: e.target.value })
                   }
+                  placeholder="e.g. 6"
                 />
               </Field>
               <Field label="Copyright status">
@@ -649,6 +732,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, copyrightStatus: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select copyright status
+                  </option>
+                  
                   <option>Licensed</option>
                   <option>Public Domain</option>
                   <option>Open Access</option>
@@ -661,6 +748,10 @@ function EntryWizard() {
                     setBookForm({ ...bookForm, accessRestrictions: e.target.value })
                   }
                 >
+                  <option value="" disabled>
+                    Select access restrictions
+                  </option>
+                  
                   <option>Library network only</option>
                   <option>Unrestricted</option>
                 </SelectInput>
@@ -674,6 +765,7 @@ function EntryWizard() {
                       digitalProcurementRecord: e.target.value,
                     })
                   }
+                  placeholder="e.g. PR-2026-FIC-082"
                 />
               </Field>
             </div>
@@ -683,9 +775,11 @@ function EntryWizard() {
       ) : null}
 
       {step === 4 ? (
-        <div className="card-surface space-y-4 p-5">
-          <h2 className="font-bold">Step 5 — Review & finalize</h2>
-          <div className="flex flex-col gap-4 sm:flex-row">
+        <div className="card-surface space-y-6 p-5">
+          <h2 className="font-bold">Step 5 — Review & Finalize</h2>
+
+          {/* Cover + basic information */}
+          <div className="flex flex-col gap-5 sm:flex-row">
             <div className="h-40 w-28 shrink-0 overflow-hidden rounded-md border bg-[color-mix(in_srgb,var(--primary-green)_18%,white)] shadow-sm">
               {exists && match?.cover ? (
                 <img
@@ -699,53 +793,101 @@ function EntryWizard() {
                 </div>
               )}
             </div>
-            <div className="grid flex-1 gap-3 sm:grid-cols-2">
-              <Field label="Title">
-                <TextInput
-                  readOnly
-                  value={bookForm.title}
-                />
-              </Field>
-              <Field label="Category">
-                <TextInput
-                  readOnly
-                  value={bookForm.category}
-                />
-              </Field>
-              <Field label="Edition / Year">
-                <TextInput
-                  readOnly
-                  value={`${bookForm.edition} · ${bookForm.publicationYear}`}
-                />
-              </Field>
-              <Field label="Asset type">
-                <TextInput readOnly value={assetType} />
-              </Field>
-              <Field label={assetType === "Physical" ? "Barcodes" : "E-book ID"}>
-                <TextInput
-                  readOnly
-                  value={
-                    assetType === "Physical"
-                      ? `BC-9021-001 … BC-9021-00${quantity}`
-                      : "EB-9021"
-                  }
-                />
-              </Field>
-              <Field label={assetType === "Physical" ? "Location" : "Max concurrent"}>
-                <TextInput
-                  readOnly
-                  value={
-                    assetType === "Physical"
-                      ? bookForm.location
-                      : bookForm.maxConcurrent
-                  }
-                />
-              </Field>
+
+            <div className="grid flex-1 gap-4 sm:grid-cols-2">
+              <ReviewField label="Title" value={bookForm.title} />
+              <ReviewField label="Author(s)" value={bookForm.authors} />
+              <ReviewField label="Category" value={bookForm.category} />
+              <ReviewField label="ISBN" value={isbn} />
             </div>
           </div>
+
+          {/* Basic information */}
+          <ReviewSection title="Basic Information">
+            <ReviewField label="Keywords" value={bookForm.keywords} />
+            <ReviewField label="Summary" value={bookForm.summary} fullWidth />
+          </ReviewSection>
+
+          {/* Edition information */}
+          <ReviewSection title="Edition Information">
+            <ReviewField label="Edition Number" value={bookForm.edition} />
+            <ReviewField label="Editor(s)" value={bookForm.editor} />
+            <ReviewField label="Publisher" value={bookForm.publisher} />
+            <ReviewField
+              label="Publication Year"
+              value={bookForm.publicationYear}
+            />
+            <ReviewField label="Language" value={bookForm.language} />
+            <ReviewField label="Page Count" value={bookForm.pages} />
+            <ReviewField label="Call Number" value={bookForm.callNumber} />
+            <ReviewField
+              label="Price Cost (per unit)"
+              value={bookForm.price}
+            />
+          </ReviewSection>
+
+          {/* Asset information */}
+          <ReviewSection title="Asset Information">
+            <ReviewField label="Asset Type" value={assetType} />
+
+            {assetType === "Physical" ? (
+              <>
+                <ReviewField label="Quantity Received" value={String(quantity)} />
+                <ReviewField label="Format" value={bookForm.format} />
+                <ReviewField label="Location" value={bookForm.location} />
+                <ReviewField label="Copy Status" value={bookForm.copyStatus} />
+                <ReviewField label="Condition" value={bookForm.condition} />
+                <ReviewField
+                  label="Replacement Cost"
+                  value={bookForm.replacementCost}
+                />
+                <ReviewField
+                  label="Procurement Record"
+                  value={bookForm.physicalProcurementRecord}
+                />
+                <ReviewField
+                  label="Accession Range"
+                  value={`ACC-77${101} – ACC-77${100 + quantity}`}
+                />
+                <ReviewField
+                  label="Generated Barcodes"
+                  value={`BC-9021-001 … BC-9021-00${quantity}`}
+                />
+              </>
+            ) : (
+              <>
+                <ReviewField
+                  label="Licensed Quantity"
+                  value={bookForm.licensedQuantity}
+                />
+                <ReviewField label="File Format" value={bookForm.fileFormat} />
+                <ReviewField label="Access URL" value={bookForm.accessUrl} />
+                <ReviewField label="File Size (MB)" value={bookForm.fileSize} />
+                <ReviewField
+                  label="Max Concurrent Users"
+                  value={bookForm.maxConcurrent}
+                />
+                <ReviewField
+                  label="Copyright Status"
+                  value={bookForm.copyrightStatus}
+                />
+                <ReviewField
+                  label="Access Restrictions"
+                  value={bookForm.accessRestrictions}
+                />
+                <ReviewField
+                  label="Procurement Record"
+                  value={bookForm.digitalProcurementRecord}
+                />
+                <ReviewField label="E-book ID" value="EB-9021" />
+              </>
+            )}
+          </ReviewSection>
+
           <div className="flex gap-3">
             <GhostButton onClick={() => setStep(3)}>Back</GhostButton>
-            <AccentButton onClick={() => setDone(true)}>Submit & Commit</AccentButton>
+
+            <AccentButton onClick={() => setDone(true)}>Submit</AccentButton>
           </div>
         </div>
       ) : null}
@@ -757,7 +899,7 @@ function NavRow({ onBack, onNext }: { onBack: () => void; onNext: () => void }) 
   return (
     <div className="flex gap-3">
       <GhostButton onClick={onBack}>Back</GhostButton>
-      <PrimaryButton onClick={onNext}>Review & Continue</PrimaryButton>
+      <PrimaryButton onClick={onNext}>Continue</PrimaryButton>
     </div>
   );
 }
