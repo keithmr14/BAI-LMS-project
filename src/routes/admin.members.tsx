@@ -343,7 +343,7 @@ function MemberWizard() {
           </Field>
           <div className="flex gap-3">
             <GhostButton onClick={() => setStep(0)}>Back</GhostButton>
-            <PrimaryButton onClick={() => setStep(2)}>Review & Continue</PrimaryButton>
+            <PrimaryButton onClick={() => setStep(2)}>Continue</PrimaryButton>
           </div>
         </div>
       ) : null}
@@ -402,7 +402,7 @@ function MemberWizard() {
 
           <div className="flex gap-3">
             <GhostButton onClick={() => setStep(match ? 0 : 1)}>Back</GhostButton>
-            <AccentButton onClick={() => setDone(true)}>Submit & Commit</AccentButton>
+            <AccentButton onClick={() => setDone(true)}>Submit</AccentButton>
           </div>
         </div>
       ) : null}
